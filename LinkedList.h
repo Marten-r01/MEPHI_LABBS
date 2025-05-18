@@ -1,4 +1,5 @@
 #pragma once
+#include"exeption.h"
 using namespace std;
 template <typename T>
 class LinkedList {
@@ -40,17 +41,17 @@ public:
 	}
 	T GetFirst() {
 		if (size == 0)
-			throw invalid_argument("IndexOutOfRange");
+			throw InvalidArgument();
 		return start_el->data;
 	}
 	T GetLast() {
 		if (size == 0)
-			throw invalid_argument("IndexOutOfRange");
+			throw InvalidArgument();
 		return end_el->data;
 	}
 	T Get(int index) {
 		if (index < 0 || index >= size)
-			throw invalid_argument("IndexOutOfRange");
+			throw IndexOutOfRange();
 		List* cur = start_el;
 		for (int i = 0; i <= index; i++) {
 			cur = cur->next;
@@ -59,9 +60,9 @@ public:
 	}
 	LinkedList<T>* GetSubList(int startIndex, int endIndex) {
 		if (startIndex < 0 || endIndex < 0)
-			throw invalid_argument("IndexOutOfRange");
+			throw IndexOutOfRange();
 		if (startIndex>=size || endIndex>= size || startIndex>endIndex)
-			throw invalid_argument("IndexOutOfRange");
+			throw IndexOutOfRange();
 		LinkedList<T>* cut = new LinkedList<T>;
 		List* cur = start_el;
 		for (int i = 0; i < startIndex; i++)
@@ -91,7 +92,7 @@ public:
 	}
 	void InsertAt(T item, int index) {
 		if (index<0 || index>size)
-			throw invalid_argument("IndexOutOfRange");
+			throw IndexOutOfRange();
 		List add_el = new List;
 		add_el->data = item;
 		List* cur = start_el;
@@ -127,7 +128,7 @@ public:
 		return this;
 	}
 	void RemoveAt(int index) {
-		if(index<0||index>=size) throw invalid_argument("IndexOutOfRange");
+		if(index<0||index>=size) throw IndexOutOfRange();
 		else if (index == 0) {
 			List* temp = start_el;
 			start_el = start_el->next;

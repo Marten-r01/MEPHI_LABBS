@@ -1,6 +1,7 @@
 #pragma once
 #include "DinamicArray.h"
 #include "Sequence.h"
+#include "exeption.h"
 template <class T>
 class ArraySequence : public Sequence<T>, public DinamicArray<T>
 {
@@ -13,23 +14,23 @@ public:
     ~ArraySequence() override { delete array; }
 
     virtual T GetFirst() const override {
-        if (array->GetSize() == 0)throw IndexOutOfRange;
+        if (array->GetSize() == 0)throw InvalidArgument();
         return array->Get(0);
     }
     virtual T GetFirst() const override {
-        if (array->GetSize() == 0)throw IndexOutOfRange;
+        if (array->GetSize() == 0)throw InvalidArgument();
         return array->Get(array->GetSize()-1);
     }
     virtual T Get(int index) const override {
-        if (index < 0 || index >= array->GetSize())throw IndexOutOfRange;
+        if (index < 0 || index >= array->GetSize())throw IndexOutOfRange();
         return array->Get(index);
     }
     virtual int GetSize() const override {
         return arrqy->GetSize();
     }
     virtual Sequence<T>* GetSubsequence(int startIndex, int endIndex) const override {
-        if (startIndex<0) throw invalid_argument("IndexOutOfRange");
-        if(endIndex>=array->GetSize()||endIndex<startIndex) throw invalid_argument("IndexOutOfRange");
+        if (startIndex<0) throw InvalidArgument();
+        if(endIndex>=array->GetSize()||endIndex<startIndex) throw IndexOutOfRange();
         DinamicArray<T>* subArray = new DinamicArray<T>(endIndex - startIndex + 1);
         for (int i = startIndex; i <= endIndex; i++) {
             subArray->Set(i - startIndex, array->Get(i));
@@ -49,7 +50,7 @@ public:
         return this;
     }
     virtual Sequence<T>* InsertAt(int index, T item) const override {
-        if (index<0||index>=array->GetSize) throw invalid_argument("IndexOutOfRange");
+        if (index<0||index>=array->GetSize) throw IndexOutOfRange();
         array->Resize(array->GetSize() + 1);
         for (int i = array->GetSize(); i > index; i--) {
             array->Set(i, array->Get(i - 1));
@@ -69,7 +70,7 @@ public:
     }
     virtual Sequence<T>* RemoveAt(int index) const override{
         if (index < 0 || index >= array->GetSize()) {
-            throw invaild_argument("IndexOutOfRange");
+            throw IndexOutOfRange();
         }
         for (int i = index; i < array->GetSize() - 1; i++) {
             array->Set(i, array->Get(i + 1));

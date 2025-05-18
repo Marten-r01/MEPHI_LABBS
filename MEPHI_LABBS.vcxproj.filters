@@ -44,6 +44,9 @@
     <ClInclude Include="ImmutableListSequence.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="exeption.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

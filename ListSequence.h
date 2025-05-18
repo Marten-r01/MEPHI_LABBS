@@ -1,5 +1,6 @@
 #pragma once
 #include"LinkedList.h"
+#include"exeption.h"
 template <class T>
 class ListSequence :public Sequence<T>, public LinkedList<T> {
 private:
@@ -15,7 +16,7 @@ public:
     T Get(int index) const override { return list->Get(index); }
 
     virtual Sequence<T>* GetSubsequence(int Startindex, int Endindex) const override {
-        if(Startindex<0||Endindex>=list->GetSize()||Endindex<Startindex) throw invalid_argument("IndexOutOfRange");
+        if(Startindex<0||Endindex>=list->GetSize()||Endindex<Startindex) throw IndexOutOfRange();
         LinkedList<T> sublist = list->GetSubList(Startindex, Endindex);
         return new ListSequence<T>(* sublist);
     }

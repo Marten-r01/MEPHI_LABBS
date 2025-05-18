@@ -1,4 +1,5 @@
 #pragma once
+#include "exeption.h"
 using namespace std;
 template<typename T>
 class DinamicArray {
@@ -33,7 +34,7 @@ public:
 	}
 	T Get(int index) {
 		if (index < 0 || index >= (int)m_size)
-			throw invalid_argument("IndexOutOfRange");
+			throw IndexOutOfRange();
 		return m_arr[index];
 	}
 	int GetSize() {
@@ -41,12 +42,12 @@ public:
 	}
 	void Set(int index, T value) {
 		if (index<0 || index >= (int)m_size || index>(int)m_capacity)
-			throw invalid_argument("IndexOutOfRange");
+			throw IndexOutOfRange();
 		m_arr[index] = value;
 	}
 	void Resize(int newSize) {
 		if (newSize < 0)
-			throw invalid_argument("IndexOutOfRange");
+			throw MemoryAllocationError();
 		if (newSize < m_capacity)
 			return;
 		T* new_m_arr = new T[newSize];

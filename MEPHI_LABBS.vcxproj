@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="ArraySequence.h" />
     <ClInclude Include="DinamicArray.h" />
+    <ClInclude Include="exeption.h" />
     <ClInclude Include="ImmutableArraySequence.h" />
     <ClInclude Include="ImmutableListSequence.h" />
     <ClInclude Include="LinkedList.h" />
