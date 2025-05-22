@@ -6,23 +6,12 @@
 #include "LinkedList.h"
 #include "DinamicArray.h"
 #include "Sequence.h"
+#include "main.cpp"
 using namespace std;
 int main()
 {
-    HANDLE  h = GetStdHandle(STD_OUTPUT_HANDLE);
-    setlocale(LC_ALL, "Russia");
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-    SetConsoleCursorPosition(h, { 0,0 });
-    cout << "Добро пожаловать в генератор списков и массивов по введеным данным\n"
-        << (char)16 << " Ввести новые данные\n"
-        << (char)16 << " Вывести внесенные данные на экран\n"
-        << (char)16 << " Удалить \n"
-        << (char)16 << " Выбрать подмассив данных\n"
-        << (char)16 << " Объединить два списка\n"
-        << (char)16 << " Удалить значение\n"
-        << (char)16 << " ВЫйти\n";
-
+	runUI();
+	return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
