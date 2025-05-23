@@ -24,6 +24,20 @@ public:
 		}
 
 	}
+
+	LinkedList(T* items, int count) {
+		size = count;
+		start_el = new Node{ items[0], nullptr };
+		Node* curr = start_el;
+
+		for (int i = 1; i < count; i++) {
+			Node* new_node = new Node{ items[i], nullptr };
+			curr->next = new_node;
+			curr = new_node;
+		}
+	}
+
+
 	void Append(const T& item) {
 		Node* newNode = new Node(item);
 		if (size == 0) {
@@ -35,7 +49,6 @@ public:
 			end_el = newNode;
 		}
 		size++;
-		
 	}
 	T GetFirst() {
 		if (size == 0) throw InvalidArgument();

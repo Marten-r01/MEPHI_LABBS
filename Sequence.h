@@ -8,12 +8,12 @@ public:
 	virtual T GetFirst() const = 0;
 	virtual T GetLast() const = 0;
 
-	virtual Sequence<T>* GetSubsequence(int startIndex, int endIndex) ;
-	virtual Sequence<T>* Append(const T& item) ;
-	virtual Sequence<T>* Prepend(const T& item) ;
-	virtual Sequence<T>* InsertAt(const T& item, int index) ;
-	virtual Sequence <T>* Concat(const Sequence <T>* list) const =0;
-	virtual Sequence<T>* RemoveAt(int index) ;
+	virtual Sequence<T>* GetSubsequence(int startIndex, int endIndex) const = 0;
+	virtual Sequence<T>* Append(const T& item) const = 0;
+	virtual Sequence<T>* Prepend(const T& item)const = 0;
+	virtual Sequence<T>* InsertAt(const T& item, int index) const = 0;
+	//virtual Sequence <T>* Concat(const Sequence <T>* list) const =0;
+	virtual Sequence<T>* RemoveAt(int index) const = 0;
 };
 template<class T>
 bool operator==(const Sequence<T>& a, const Sequence<T>& b) {
