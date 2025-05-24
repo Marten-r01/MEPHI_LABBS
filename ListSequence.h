@@ -1,54 +1,56 @@
 #pragma once
+#pragma once
 #include "Sequence.h"
-#include"LinkedList.h"
-#include"exeption.h"
+#include "LinkedList.h"
+#include "exeption.h"
 #include <gtest/gtest.h>
 
 template <class T>
 class ListSequence : public Sequence<T> {
 private:
-	LinkedList<T>* list;
+    LinkedList<T>* list;
 public:
-    ListSequence(T* items, int count) : list(new LinkedList<T>(*items, count)) {}
+    ListSequence(T* items, int count) : list(new LinkedList<T>(items, count)) {}
     ListSequence() : list(new LinkedList<T>()) {}
     ListSequence(const ListSequence<T>& other) : list(new LinkedList<T>(*other.list)) {}
     ~ListSequence() override { delete list; }
-    
+
     virtual T GetFirst() const override { return list->GetFirst(); }
 
     virtual T GetLast() const override { return list->GetLast(); }
 
-    virtual T Get(int index) const { return list->Get(index); }
+    virtual T Get(int index) const override { return list->Get(index); }
 
-    virtual int GetSize() { return list->GetSize(); }
-
+    virtual int GetSize() const override { return list->GetSize(); }
 
     virtual ListSequence<T>* GetSubsequence(int Startindex, int Endindex) const override {
-        if(Startindex<0||Endindex>=list->GetSize()||Endindex<Startindex) throw IndexOutOfRange();
-        LinkedList<T> sublist = list->GetSubList(Startindex, Endindex);
-        return new ListSequence<T>(* sublist);
+        if (Startindex < 0 || Endindex >= list->GetSize() || Endindex < Startindex) throw IndexOutOfRange();
+        LinkedList<T>* sublist = list->GetSubList(Startindex, Endindex);
+        ListSequence<T>* result = new ListSequence<T>();
+        delete result->list;
+        result->GetSubList = sublist;
+        return sublist;
     }
 
-    virtual Sequence<T>* Append(const T& item) const override {
+    virtual ListSequence<T>* Append(const T& item) override {
         list->Append(item);
         return this;
     }
 
-    virtual Sequence<T>* Prepend(T item) const override {
+    virtual ListSequence<T>* Prepend(const T& item) override {
         list->Prepend(item);
         return this;
     }
 
-    virtual Sequence<T>* InsertAt(T item, int index) const override {
+    virtual ListSequence<T>* InsertAt(const T& item, int index) override {
         list->InsertAt(item, index);
         return this;
     }
 
-    virtual Sequence<T>*  RemoveAt(int index)const  override{
+    virtual ListSequence<T>* RemoveAt(int index) override {
         list->RemoveAt(index);
         return this;
     }
-
 };
 TEST(ListSequenceTest, DefaultConstructor) {
     ListSequence<int> seq;

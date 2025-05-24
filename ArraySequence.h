@@ -45,19 +45,19 @@ public:
         return result;
     }
 
-    virtual Sequence<T>* Append(const T& item) const override{
+    virtual Sequence<T>* Append(const T& item) override{
         array->Resize(array->GetSize() + 1);
         array->Set(array->GetSize() - 1, item);
         return this;
     }
-    virtual Sequence<T>* Prepend(const T& item) const override {
+    virtual Sequence<T>* Prepend(const T& item) override {
         array->Resize(array->GetSize() + 1);
         for (int i = 0; i < array->GetSize() - 1; i++)
             array->Set(i + 1, array->Get(i));
         array->Set(0, item);
         return this;
     }
-    virtual Sequence<T>* InsertAt(const T& item, int index) const override {
+    virtual Sequence<T>* InsertAt(const T& item, int index) override {
         array->Resize(array->GetSize() + 1);
         for (int i = array->GetSize(); i > index; i--) {
             array->Set(i, array->Get(i - 1));
@@ -74,7 +74,7 @@ public:
         return newSeq;
     }
 
-    virtual Sequence<T>* RemoveAt(int index) const override{
+    virtual Sequence<T>* RemoveAt(int index)  override{
         if (index < 0 || index >= array->GetSize()) {
             throw IndexOutOfRange();
         }
