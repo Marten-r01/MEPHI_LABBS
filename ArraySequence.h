@@ -2,86 +2,108 @@
 #include "DinamicArray.h"
 #include "Sequence.h"
 #include "exeption.h"
+#include <gtest/gtest.h>
 template <class T>
-class ArraySequence : public Sequence<T>, public DinamicArray<T>
-{
+class ArraySequence : public Sequence<T> {
 private:
-    DinamicArray<T>* array; 
+    DynamicArray<T>* items;
+    int count;
 public:
-    ArraySequence(T* items, int count) : array(new DinamicArray<T>(items, count)) {}
+    ArraySequence() {
+        items = new DynamicArray<T>(4);
+        count = 0;
+    }
 
-    ArraySequence() : array(new DinamicArray<T>()) {}
+    ArraySequence(const T* arr, int length) {
+        items = new DynamicArray<T>(length);
+        for (int i = 0; i < length; i++) {
+            items->Set(i, arr[i]);
+        }
+        count = length;
+    }
 
-    ArraySequence(int count) : array(new DinamicArray<T>(count)) {}
+    ArraySequence(const ArraySequence<T>& other) {
+        count = other.count;
+        items = new DynamicArray<T>(*other.items);
+    }
 
-    ArraySequence(const ArraySequence<T>& other) : array(new DinamicArray<T>(*other.array)) {}
-
-
-    ~ArraySequence()  { delete array; }
+    virtual ~ArraySequence() {
+        delete items;
+    }
 
     virtual T GetFirst() const override {
-        return array->Get(0);
+        return items->Get(0);
     }
 
     virtual T GetLast() const override {
-        return array->Get(array->GetSize()-1);
+        return items->Get(count - 1);
     }
 
     virtual T Get(int index) const override {
-        return array->Get(index);
+        return items->Get(index);
     }
 
     virtual int GetSize() const override {
-        return array->GetSize();
+        return count;
     }
-    virtual Sequence<T>* GetSubsequence(int startIndex, int endIndex) override {
-        int subSize = endIndex - startIndex + 1;
-        T* tempArray = new T[subSize];  // временный массив
-        for (int i = 0; i < subSize; i++) {
-            tempArray[i] = array->Get(startIndex + i);
+
+    virtual Sequence<T>* GetSubsequence(int startIndex, int endIndex) const override {
+        int newLen = endIndex - startIndex + 1;
+        T* temp = new T[newLen];
+        for (int i = 0; i < newLen; i++) {
+            temp[i] = items->Get(startIndex + i);
         }
-        ArraySequence<T>* result = new ArraySequence<T>(tempArray, subSize);
-        delete[] tempArray;  // освобождаем временный массив
+        ArraySequence<T>* result = new ArraySequence<T>(temp, newLen);
+        delete[] temp;
         return result;
     }
 
-    virtual Sequence<T>* Append(const T& item) override{
-        array->Resize(array->GetSize() + 1);
-        array->Set(array->GetSize() - 1, item);
-        return this;
-    }
-    virtual Sequence<T>* Prepend(const T& item) override {
-        array->Resize(array->GetSize() + 1);
-        for (int i = 0; i < array->GetSize() - 1; i++)
-            array->Set(i + 1, array->Get(i));
-        array->Set(0, item);
-        return this;
-    }
-    virtual Sequence<T>* InsertAt(const T& item, int index) override {
-        array->Resize(array->GetSize() + 1);
-        for (int i = array->GetSize(); i > index; i--) {
-            array->Set(i, array->Get(i - 1));
+    virtual Sequence<T>* Append(const T& item) override {
+        if (count == items->Size()) {
+            items->Resize(items->Size() * 2);
         }
-        array->Set(index, item);
+        items->Set(count, item);
+        count++;
         return this;
     }
 
-    virtual Sequence<T>* Concat(const Sequence<T>* other)const override {
+    virtual Sequence<T>* RemoveAt(int index) override {
+        for (int i = index; i < count - 1; i++) {
+            items->Set(i, items->Get(i + 1));
+        }
+        count--;
+        return this;
+    }
+
+    virtual Sequence<T>* Prepend(const T& item) override {
+        if (count == items->Size()) {
+            items->Resize(items->Size() * 2);
+        }
+        for (int i = count; i > 0; i--) {
+            items->Set(i, items->Get(i - 1));
+        }
+        items->Set(0, item);
+        count++;
+        return this;
+    }
+
+    virtual Sequence<T>* InsertAt(const T& item, int index) override {
+        if (count == items->Size()) {
+            items->Resize(items->Size() * 2);
+        }
+        for (int i = count; i > index; i--) {
+            items->Set(i, items->Get(i - 1));
+        }
+        items->Set(index, item);
+        count++;
+        return this;
+    }
+
+    virtual Sequence<T>* Concat(const Sequence<T>* seq) const override {
         ArraySequence<T>* newSeq = new ArraySequence<T>(*this);
-        for (int i = 0; i < other->GetSize(); i++) {
-            newSeq->Append(other->Get(i));
+        for (int i = 0; i < seq->GetSize(); i++) {
+            newSeq->Append(seq->Get(i));
         }
         return newSeq;
     }
-
-    virtual Sequence<T>* RemoveAt(int index)  override{
-        if (index < 0 || index >= array->GetSize()) {
-            throw IndexOutOfRange();
-        }
-        for (int i = index; i < array->GetSize() - 1; i++) {
-            array->Set(i, array->Get(i + 1));
-        }
-        array->Resize(array->GetSize() - 1); 
-    }
-    
 };

@@ -1,74 +1,91 @@
 #pragma once
 #include "exeption.h"
-using namespace std;
-template<typename T>
-class DinamicArray {
-	T* m_arr;
-	int m_size;
-	int m_capacity;
+#include <gtest/gtest.h>
+template <class T>
+class DynamicArray {
+private:
+    T* data;
+    int size;
+
 public:
-	DinamicArray() : m_arr(nullptr), m_size(0), m_capacity(0) {}
+    DynamicArray(const T* items, int count) {
+        if (count < 0) {
+            throw InvalidArgument();
+        }
+        size = count;
+        data = new T[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = items[i];
+        }
+    }
 
-	DinamicArray(T* items, int count) {
-		m_arr = new T[count];
-		for (int i = 0; i < count; i++)
-			m_arr[i] = items[i];
-		m_size = m_capacity = count;
-	}
-	DinamicArray(int size) {
-		if (size > 0) {
-			m_capacity = size;
-			m_size = 0;
-			m_arr = new T[size];
-		}
-		else {
-			m_arr = nullptr;
-			m_size = m_capacity = 0;
-		}
-	}
-	DinamicArray(const DinamicArray<T> & other ) {
-		this->m_size = other.m_size;
-		this->m_capacity = other.m_capacity;
-		this->m_arr = new T[m_capacity];
-		for (int i = 0; i < m_size; i++) {
-			this->m_arr[i] = m_arr[i];
-		}
-	}
-	T Get(int index) {
-		if (index < 0 || index >= m_size)
-			throw IndexOutOfRange();
-		return m_arr[index];
-	}
-	int GetSize() {
-		return m_size;
-	}
-	void Set(int index, T value) {
-		if (index<0 || index > m_size || index>=m_capacity)
-			throw IndexOutOfRange();
-		m_arr[index] = value;
-	}
-	void Resize(int newSize) {
-		if (newSize < 0) throw MemoryAllocationError();
-		if (newSize < m_capacity) return;
+    DynamicArray(int size) {
 
-		T* new_m_arr = new T[newSize];
-		for (int i = 0; i < m_size; i++) {
-			new_m_arr[i] = m_arr[i];
-		}
-		m_capacity = newSize;
-		delete[] m_arr;
-		m_arr = new_m_arr;
-		return;
-	}
-	~DinamicArray() {
-		delete[] m_arr;
-	}
+        if (size < 0) {
+            throw InvalidArgument();
+        }
+        this->size = size;
+        data = new T[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = T();
+        }
+    }
+
+    DynamicArray(const DynamicArray<T>& other) {
+        size = other.size;
+        data = new T[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = other.data[i];
+        }
+    }
+
+    ~DynamicArray() {
+        delete[] data;
+    }
+
+    int GetSize() const {
+        return size;
+    }
+
+    int Size() const {
+        return size;
+    }
+
+    T Get(int index) const {
+        if (index < 0) {
+            throw IndexOutOfRange(); // code=0 => "index < 0?"
+        }
+        if (index >= size) {
+            throw IndexOutOfRange(); // code=1 => "index >= size"
+        }
+        return data[index];
+    }
+
+    void Set(int index, const T& value) {
+        if (index < 0) {
+            throw IndexOutOfRange();
+        }
+        if (index >= size) {
+            throw IndexOutOfRange();
+        }
+        data[index] = value;
+    }
+
+    void Resize(int newSize) {
+        if (newSize < 0) {
+            throw InvalidArgument();
+        }
+        T* newData = new T[newSize];
+        int minSize = (newSize < size) ? newSize : size;
+        for (int i = 0; i < minSize; i++) {
+            newData[i] = data[i];
+        }
+        for (int i = minSize; i < newSize; i++) {
+            newData[i] = T();
+        }
+        delete[] data;
+        data = newData;
+        size = newSize;
+    }
 
 };
-/*template <typename T>
-bool operator=(const DinamicArray<T>& a, const DinamicArray<T>& b) {
-	if (a->m_capacity == b->m_capacity) {
-		for (int i = 0;i<)
-	}
-	return false;
-}*/

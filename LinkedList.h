@@ -1,10 +1,12 @@
 #pragma once
 #include"exeption.h"
+#include <gtest/gtest.h>
 using namespace std;
 template <typename T>
 class LinkedList {
 	struct Node {
 		Node(const T& value) : data(value), next(nullptr), past(nullptr) {}
+		Node() :data(0), next(nullptr), past(nullptr) {}
 		Node* next;
 		Node* past;
 		T data;
@@ -27,13 +29,13 @@ public:
 
 	LinkedList(T* items, int count) {
 		size = count;
-		start_el = new Node{ items[0], nullptr };
+		start_el = new Node{ items[0]};
 		Node* curr = start_el;
 
 		for (int i = 1; i < count; i++) {
-			Node* new_node = new Node{ items[i], nullptr };
-			curr->next = new_node;
-			curr = new_node;
+			Node* add_el = new Node{ items[i]};
+			curr->next = add_el;
+			curr = add_el;
 		}
 	}
 
@@ -90,7 +92,7 @@ public:
 	}
 
 	void Prepend(const T& item)  {
-		Node head = new Node(item);
+		Node* head = new Node(item);
 		if (size == 0)
 		{
 			head->next = head->past = head;
@@ -105,9 +107,26 @@ public:
 	void InsertAt(const T& item, int index) {
 		if (index<0 || index>size)
 			throw IndexOutOfRange();
-		Node add_el = new Node;
-		add_el->data = item;
-		Node* cur = start_el;
+		Node* add_el = new Node(item);
+		Node* current = start_el;
+		// Переходим к узлу перед нужной позицией
+		for (int i = 0; i < index - 1; ++i) {
+			current = current->next;
+		}
+
+		// Устанавливаем связи нового узла
+		add_el->next = current->next;
+		add_el->past = current;
+
+		// Обновляем связи соседних узлов
+		if (current->next != nullptr) {
+			current->next->past = add_el;
+		}
+		current->next = add_el;
+	
+
+		size++;
+		/*Node* cur = start_el;
 		for (int i = 0; i < index; i++) {
 			cur = cur->next;
 		}
@@ -118,7 +137,7 @@ public:
 		}
 		add_el->next = cur->next;
 		cur->next = &add_el;
-		size++;
+		size++;*/
 	}
 	LinkedList<T>* Concat(LinkedList<T>* Node) {
 		if (Node->size == 0)
