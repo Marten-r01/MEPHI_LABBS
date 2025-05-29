@@ -1,7 +1,8 @@
 #pragma once
 #include "exeption.h"
 #include <gtest/gtest.h>
-template <class T>
+
+template<class T>
 class DynamicArray {
 private:
     T* data;
@@ -20,7 +21,6 @@ public:
     }
 
     DynamicArray(int size) {
-
         if (size < 0) {
             throw InvalidArgument();
         }
@@ -87,5 +87,4 @@ public:
         data = newData;
         size = newSize;
     }
-
 };

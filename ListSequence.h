@@ -5,17 +5,25 @@
 #include "exeption.h"
 #include <gtest/gtest.h>
 
-template <class T>
+template<class T>
 class ListSequence : public Sequence<T> {
 private:
     LinkedList<T>* list;
+
 public:
-    ListSequence(T* items, int count) : list(new LinkedList<T>(items, count)) {}
-    ListSequence() : list(new LinkedList<T>()) {}  
-    ListSequence(const ListSequence<T>& other) : list(new LinkedList<T>(*other.list)) {}
+    ListSequence(T* items, int count) : list(new LinkedList<T>(items, count)) {
+    }
+
+    ListSequence() : list(new LinkedList<T>()) {
+    }
+
+    ListSequence(const ListSequence<T>& other) : list(new LinkedList<T>(*other.list)) {
+    }
+
     ~ListSequence() override { delete list; }
 
-    ListSequence(const LinkedList<T>& inputList) : list(new LinkedList<T>(inputList)) {}
+    ListSequence(const LinkedList<T>& inputList) : list(new LinkedList<T>(inputList)) {
+    }
 
     virtual T GetFirst() const override { return list->GetFirst(); }
 
@@ -52,6 +60,7 @@ public:
         list->RemoveAt(index);
         return this;
     }
+
     virtual Sequence<T>* Concat(const Sequence<T>* other) override {
         ListSequence<T>* newSeq = new ListSequence<T>(*this);
         for (int i = 0; i < other->GetSize(); i++) {

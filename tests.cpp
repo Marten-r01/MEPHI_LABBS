@@ -1,7 +1,8 @@
-/*#include "LinkedList.h"
+#include "LinkedList.h"
 #include "DinamicArray.h"
 #include "ArraySequence.h"
 #include "ListSequence.h"
+#include "gtest/gtest.h"
 
 
 TEST(ListSequenceTest, DefaultConstructor) {
@@ -10,7 +11,7 @@ TEST(ListSequenceTest, DefaultConstructor) {
 }
 
 TEST(ListSequenceTest, ArrayConstructor) {
-    int arr[] = { 1, 2, 3, 4, 5 };
+    int arr[] = {1, 2, 3, 4, 5};
     ListSequence<int> seq(arr, 5);
 
     EXPECT_EQ(seq.GetSize(), 5);
@@ -19,7 +20,7 @@ TEST(ListSequenceTest, ArrayConstructor) {
 }
 
 TEST(ListSequenceTest, Get) {
-    int arr[] = { 10, 20, 30 };
+    int arr[] = {10, 20, 30};
     ListSequence<int> seq(arr, 3);
 
     EXPECT_EQ(seq.Get(0), 10);
@@ -49,7 +50,7 @@ TEST(ListSequenceTest, Prepend) {
 }
 
 TEST(ListSequenceTest, InsertAt) {
-    int arr[] = { 1, 2, 4, 5 };
+    int arr[] = {1, 2, 4, 5};
     ListSequence<int> seq(arr, 4);
 
     seq.InsertAt(3, 2);
@@ -59,7 +60,7 @@ TEST(ListSequenceTest, InsertAt) {
 }
 
 TEST(ListSequenceTest, RemoveAt) {
-    int arr[] = { 1, 2, 3, 4, 5 };
+    int arr[] = {1, 2, 3, 4, 5};
     ListSequence<int> seq(arr, 5);
 
     seq.RemoveAt(2);
@@ -69,7 +70,7 @@ TEST(ListSequenceTest, RemoveAt) {
 }
 
 TEST(ListSequenceTest, GetSubsequence) {
-    int arr[] = { 1, 2, 3, 4, 5 };
+    int arr[] = {1, 2, 3, 4, 5};
     ListSequence<int> seq(arr, 5);
 
     ListSequence<int>* sub = seq.GetSubsequence(1, 3);
@@ -89,7 +90,7 @@ TEST(LinkedListTest, DefaultConstructor) {
 }
 
 TEST(LinkedListTest, ArrayConstructor) {
-    int init[] = { 1, 2, 3 };
+    int init[] = {1, 2, 3};
     LinkedList<int> list(init, 3);
     EXPECT_EQ(list.GetSize(), 3);
     EXPECT_EQ(list.GetFirst(), 1);
@@ -97,7 +98,7 @@ TEST(LinkedListTest, ArrayConstructor) {
 }
 
 TEST(LinkedListTest, Get) {
-    int arr[] = { 10, 20, 30 };
+    int arr[] = {10, 20, 30};
     LinkedList<int> list(arr, 3);
     EXPECT_EQ(list.Get(0), 10);
     EXPECT_EQ(list.Get(1), 20);
@@ -124,7 +125,7 @@ TEST(LinkedListTest, Prepend) {
 }
 
 TEST(LinkedListTest, InsertAt) {
-    int arr[] = { 1, 2, 4, 5 };
+    int arr[] = {1, 2, 4, 5};
     LinkedList<int> list(arr, 4);
     list.InsertAt(3, 2);
     EXPECT_EQ(list.GetSize(), 5);
@@ -133,7 +134,7 @@ TEST(LinkedListTest, InsertAt) {
 }
 
 TEST(LinkedListTest, RemoveAt) {
-    int arr[] = { 1, 2, 3, 4, 5 };
+    int arr[] = {1, 2, 3, 4, 5};
     LinkedList<int> list(arr, 5);
     list.RemoveAt(2);
     EXPECT_EQ(list.GetSize(), 4);
@@ -142,7 +143,7 @@ TEST(LinkedListTest, RemoveAt) {
 }
 
 TEST(LinkedListTest, GetSubList) {
-    int arr[] = { 1, 2, 3, 4, 5 };
+    int arr[] = {1, 2, 3, 4, 5};
     LinkedList<int> list(arr, 5);
     LinkedList<int>* sub = list.GetSubList(1, 3);
     EXPECT_EQ(sub->GetSize(), 3);
@@ -154,8 +155,8 @@ TEST(LinkedListTest, GetSubList) {
 }
 
 TEST(LinkedListTest, Concat) {
-    int arr1[] = { 1, 2, 3 };
-    int arr2[] = { 4, 5, 6 };
+    int arr1[] = {1, 2, 3};
+    int arr2[] = {4, 5, 6};
     LinkedList<int> list1(arr1, 3);
     LinkedList<int> list2(arr2, 3);
     LinkedList<int>* result = list1.Concat(&list2);
@@ -166,4 +167,8 @@ TEST(LinkedListTest, Concat) {
     EXPECT_EQ(result->Get(5), 6);
     delete result;
 }
-*/
+
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
